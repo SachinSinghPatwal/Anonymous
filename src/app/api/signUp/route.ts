@@ -24,8 +24,9 @@ export async function POST(request: NextRequest) {
       );
     }
     const existingUserVerifiedByEmail = await UserModel.findOne({ email });
-
+    // verify code 6 character
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+
     if (existingUserVerifiedByEmail) {
       if (existingUserVerifiedByEmail.isVerified) {
         return NextResponse.json<ApiResponse>(
@@ -51,8 +52,8 @@ export async function POST(request: NextRequest) {
       const newUser = new UserModel({
         username,
         email,
+        verifyCode,
         password: hashedPassword,
-        verifyCode: verifyCode,
         verifyCodeExpiry: expiryDate,
         messages: [],
       });
