@@ -1,8 +1,6 @@
 import UserModel from "@/models/User";
 import { Message } from "@/models/User";
-
 import dbConnection from "@/lib/dbConnect";
-
 import { NextRequest, NextResponse } from "next/server";
 import NormalizeError from "@/helpers/normalizeError";
 

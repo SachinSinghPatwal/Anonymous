@@ -1,7 +1,7 @@
 import dbConnection from "@/lib/dbConnect";
 import UserModel from "@/models/User";
 import NormalizeError from "@/helpers/normalizeError";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession, User } from "next-auth";
 import { ApiResponse } from "@/types/ApiResponse";
 import { authOptions } from "../auth/[...nextauth]/options";

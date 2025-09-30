@@ -5,8 +5,6 @@ import UserModel from "@/models/User";
 import { User } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { ApiResponse } from "@/types/ApiResponse";
-import { projectUpdate } from "next/dist/build/swc/generated-native";
-import { normalize } from "path";
 import normalizeError from "@/helpers/normalizeError";
 
 export async function POST(request: NextRequest) {
