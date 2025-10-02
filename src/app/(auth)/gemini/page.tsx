@@ -32,7 +32,7 @@ export default function SuggestPage() {
       if (done) break;
       const chunk = decoder.decode(value, { stream: true });
 
-      for (const word of chunk.split(/\s+/)) {
+      for (const word of chunk.split("---")) {
         if (!word) continue;
         await new Promise((r) => setTimeout(r, 60)); // 60ms per word
         setResponse((prev) => prev + word + " ");
