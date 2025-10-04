@@ -1,10 +1,13 @@
 import { NextResponse, NextRequest } from "next/server";
-export { default } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl;
-  const token = await getToken({ req: request });
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXT_AUTH_SECRET_KEY,
+  });
+
   console.log("token :", token);
   if (
     (token && url.pathname.startsWith("/signIn")) ||

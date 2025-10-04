@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCcw } from "lucide-react";
 import MessageCard from "@/components/MessageCard";
 import { Message } from "@/models/User";
+
 function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ function Page() {
   const { data: session } = useSession();
   const form = useForm({
     resolver: zodResolver(verifySchema),
+    defaultValues: { acceptMessages: false },
   });
   const { register, watch, setValue } = form;
   const acceptMessages = watch("acceptMessages");
