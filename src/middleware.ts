@@ -1,35 +1,22 @@
-// middleware.ts
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+export { default } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  const token = await getToken({ req });
-
-  const isHome = pathname === "/";
-  const isAuthRoute =
-    pathname.startsWith("/signIn") ||
-    pathname.startsWith("/signUp") ||
-    pathname.startsWith("/verify");
-  const isProtectedRoute =
-    pathname.startsWith("/dashboard") || pathname.startsWith("/u");
-
-  // If logged in: keep them off auth pages and home
-  if (token && (isAuthRoute || isHome)) {
-    if (pathname !== "/dashboard") {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
-    }
-    return NextResponse.next();
+export async function middleware(request: NextRequest) {
+  const url = request.nextUrl;
+  const token = await getToken({ req: request });
+  console.log("token :", token);
+  if (
+    (token && url.pathname.startsWith("/signIn")) ||
+    (token && url.pathname.startsWith("/verify")) ||
+    (token && url.pathname.startsWith("/signUp")) ||
+    (token && url.pathname.startsWith("/"))
+  ) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-
-  // If NOT logged in: protect private routes **and home**
-  if (!token && (isProtectedRoute || isHome)) {
-    if (pathname !== "/signIn") {
-      return NextResponse.redirect(new URL("/signIn", req.url));
-    }
-    return NextResponse.next();
+  if (!token && url.pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/signIn", request.url));
   }
-
   return NextResponse.next();
 }
 
@@ -38,8 +25,8 @@ export const config = {
     "/",
     "/signIn",
     "/signUp",
-    "/verify/:path*",
     "/dashboard/:path*",
+    "/verify/:path*",
     "/u/:path*",
   ],
 };

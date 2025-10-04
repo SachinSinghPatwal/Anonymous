@@ -1,6 +1,6 @@
 import dbConnection from "@/lib/dbConnect";
 import UserModel from "@/models/User";
-import z, { success } from "zod";
+import * as z from "zod";
 import { usernameValidation } from "@/schemas/signUpSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { ApiResponse } from "@/types/ApiResponse";
@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
     const queryParam = {
       username: searchParams.get("username"),
     };
+    console.log("query params : ", queryParam);
+
     // validate with  zod
     const result = UsernameQuerySchema.safeParse(queryParam);
     console.log("result: ", result);
@@ -55,6 +57,7 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.log("error :");
     return NextResponse.json<ApiResponse>(
       {
         success: false,

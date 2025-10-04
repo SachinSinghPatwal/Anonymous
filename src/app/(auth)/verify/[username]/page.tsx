@@ -17,29 +17,33 @@ import {
   Form,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@react-email/components";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const router = useRouter();
   const params = useParams<{ username: string }>();
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
+    defaultValues: {
+      code: "",
+    },
   });
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
+    console.log("yeah started", data.code, typeof data.code);
     try {
       const response = await axios.post("/api/verify-code", {
         username: params.username,
         code: data.code,
       });
       toast.success(response.data.message);
-      router.replace("signIn");
+      router.replace("/signIn");
     } catch (error) {
       const axiosError: any = error as AxiosError;
       toast.error(
         axiosError.response?.data.message ||
           "There was an error signing up. Please try again."
       );
-      NormalizeError("Error signing up", axiosError);
+      console.log(error);
     }
   };
   return (
@@ -59,13 +63,15 @@ export default function Page() {
                 <FormItem>
                   <FormLabel>Verification Code </FormLabel>
                   <FormControl>
-                    <Input placeholder="Code" {...field} />
+                    <Input placeholder="code" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className="hover:cursor-pointer">
+              Submit
+            </Button>
           </form>
         </Form>
       </div>

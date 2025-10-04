@@ -22,9 +22,13 @@ export async function POST(request: NextRequest) {
     const isCodeValid = user.verifyCode === code;
     const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
     if (isCodeValid && isCodeNotExpired) {
-      user.isVerified = true;
-      user.verifyCode = "";
-      await user.save();
+      await UserModel.updateOne(
+        { _id: user._id },
+        {
+          $set: { isVerified: true },
+          $unset: { verifyCode: "", verifyCodeExpiry: "" },
+        }
+      );
       return NextResponse.json<ApiResponse>(
         {
           success: true,

@@ -15,7 +15,6 @@ import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -44,16 +43,18 @@ function Page() {
       setIsCheckingUsername(true);
       setUserNameMessage("");
       try {
-        const response = await axios.get("/api/check-username", {
-          params: { username },
-        });
-        // const res = await axios.get(`/api/check-username?username=${username}`);
+        // const response = await axios.get("/api/check-username", {
+        //   params: { username },
+        // });
+        const response = await axios.get(
+          `/api/check-username-unique?username=${username}`
+        );
         //   params: { username: username },
         // });
         setUserNameMessage(response.data.message);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        setUsername(
+        const axiosError: AxiosError = error as AxiosError;
+        setUserNameMessage(
           (axiosError.response?.data.message as string) ??
             "Error checking username"
         );
@@ -79,8 +80,6 @@ function Page() {
         errorMessage || "There was an error signing up. Please try again."
       );
       NormalizeError("Error signing up", axiosError);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -100,6 +99,7 @@ function Page() {
                   <Input
                     placeholder="John Doe"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(e) => {
                       field.onChange(e);
                       debounced(e.target.value);
@@ -108,7 +108,7 @@ function Page() {
                 </FormControl>
                 {isCheckingUsername && <Loader2 className="animate-spin" />}
                 <p
-                  className={` text-sm ${userNameMessage === "Usernmae is unique" ? "text-green-500" : "text-red-500"}`}
+                  className={` text-sm ${userNameMessage === "username is unique" ? "text-green-500" : "text-red-500"}`}
                 >
                   test {userNameMessage}
                 </p>
