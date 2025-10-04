@@ -15,14 +15,8 @@ export default async function dbConnection(): Promise<void> {
     const db = await mongoose.connect(process.env.MONGO_DB_URI || "");
     connection.isConnected = db.connections[0].readyState;
     console.log("DB Connected Successfully");
-    console.log("DB object logging : ", db);
-    console.log("DB connections array logging : ", db.connections);
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log("Error while connection DB : ", error.message);
-    } else {
-      console.log("Error while connection DB : ", error);
-    }
+    console.log("Error while connection DB : ", error);
     process.exit(1);
   }
 }

@@ -17,11 +17,9 @@ export async function GET(request: NextRequest) {
     const queryParam = {
       username: searchParams.get("username"),
     };
-    console.log("query params : ", queryParam);
 
     // validate with  zod
     const result = UsernameQuerySchema.safeParse(queryParam);
-    console.log("result: ", result);
     if (!result.success) {
       const usernameErrors = result.error.format().username?._errors || [];
       return NextResponse.json<ApiResponse>(
@@ -57,7 +55,6 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("error :");
     return NextResponse.json<ApiResponse>(
       {
         success: false,

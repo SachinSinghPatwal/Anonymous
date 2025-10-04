@@ -7,8 +7,6 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXT_AUTH_SECRET_KEY,
   });
-
-  console.log("token :", token);
   if (
     (token && url.pathname.startsWith("/signIn")) ||
     (token && url.pathname.startsWith("/verify")) ||

@@ -29,7 +29,6 @@ export default function Page() {
     },
   });
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
-    console.log("yeah started", data.code, typeof data.code);
     try {
       const response = await axios.post("/api/verify-code", {
         username: params.username,
@@ -43,7 +42,6 @@ export default function Page() {
         axiosError.response?.data.message ||
           "There was an error signing up. Please try again."
       );
-      console.log(error);
     }
   };
   return (
